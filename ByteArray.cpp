@@ -4,10 +4,10 @@
 
 #include "ByteArray.h"
 
-ByteArray::ByteArray() : vector()
+ByteArray::ByteArray() : vector<Byte>()
 {
 }
 
-ByteArray::ByteArray(std::vector::size_type len) : vector<Byte>(len)
+ByteArray::ByteArray(std::vector<Byte>::size_type len) : vector<Byte>(len)
 {
 }

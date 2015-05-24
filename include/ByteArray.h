@@ -14,7 +14,7 @@ class ByteArray : public std::vector<Byte>
 public:
     ByteArray();
 
-    ByteArray(std::vector::size_type len);
+    ByteArray(std::vector<Byte>::size_type len);
 };
 
 
