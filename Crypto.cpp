@@ -4,11 +4,11 @@
 
 #include "Crypto.h"
 
-#include "ByteArray.h"
 #include "Constants.h"
 
 #include <openssl/sha.h>
 #include <openssl/ripemd.h>
+#include <openssl/ssl.h>
 
 ByteArray Crypto::sha256(const ByteArray &input)
 {
@@ -48,11 +48,11 @@ ByteArray Crypto::sign(const ByteArray &privKey, const ByteArray hash)
     return signature;
 }
 
-ByteArray privKeyToPubKey(const ByteArray &privKey)
+ByteArray Crypto::privKeyToPubKey(const ByteArray &privKey)
 {
     ByteArray pubKey(EC_PUBLIC_KEY_LENGTH);
 
-    BIGNUM *privBn = BN_bin2bn(privKey, EC_PRIVATE_KEY_LENGTH, NULL);
+    BIGNUM *privBn = BN_bin2bn(&privKey[0], EC_PRIVATE_KEY_LENGTH, NULL);
     EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
     EC_POINT *point = EC_POINT_new(group);
     BN_CTX *ctx = BN_CTX_new();
@@ -68,11 +68,11 @@ ByteArray privKeyToPubKey(const ByteArray &privKey)
     return pubKey;
 }
 
-ByteArray privKeyToCompressedPubKey(const ByteArray &privKey)
+ByteArray Crypto::privKeyToCompressedPubKey(const ByteArray &privKey)
 {
     ByteArray pubKey(EC_COMPRESSED_PUBLIC_KEY_LENGTH);
 
-    BIGNUM *privBn = BN_bin2bn(privKey, EC_PRIVATE_KEY_LENGTH, NULL);
+    BIGNUM *privBn = BN_bin2bn(&privKey[0], EC_PRIVATE_KEY_LENGTH, NULL);
     EC_GROUP *group = EC_GROUP_new_by_curve_name(NID_secp256k1);
     EC_POINT *point = EC_POINT_new(group);
     BN_CTX *ctx = BN_CTX_new();
