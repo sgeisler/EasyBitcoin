@@ -9,6 +9,7 @@
 
 class Crypto
 {
+public:
     static ByteArray sha256(const ByteArray &input);
 
     static ByteArray ripemd160(const ByteArray &input);
