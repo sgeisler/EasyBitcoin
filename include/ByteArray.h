@@ -12,8 +12,15 @@ typedef unsigned char Byte;
 class ByteArray : public std::vector<Byte>
 {
 public:
+    /*
+     * initializes empty ByteArray
+     */
     ByteArray();
 
+    /*
+     * initializes ByteArray of give size filled with 0
+     * @param len size of the ByteArray
+     */
     ByteArray(std::vector<Byte>::size_type len);
 };
 

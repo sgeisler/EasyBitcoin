@@ -12,6 +12,13 @@
 class Conversions
 {
 public:
+    /*
+     * Converts hex std::string to ByteArray, if the string has an odd size a '0' will be appended.
+     *
+     * @param hex hex string
+     * @see ByteArray
+     * @return ByteArray of the converted hex string
+     */
     static ByteArray fromHex(const std::string &hex);
 };
 
