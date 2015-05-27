@@ -4,10 +4,11 @@
 
 #include <stdexcept>
 #include <Crypto.h>
-#include "PrivateKey.h"
+#include "BtcPrivateKey.h"
 #include "Constants.h"
 
-PrivateKey::PrivateKey(const ByteArray &key) {
+BtcPrivateKey::BtcPrivateKey(const ByteArray &key)
+{
     if (key.size() == EC_PRIVATE_KEY_LENGTH) {
         this->key = key;
         this->compressed = false;
@@ -23,11 +24,13 @@ PrivateKey::PrivateKey(const ByteArray &key) {
     throw std::runtime_error("Wrong key size!");
 }
 
-ByteArray PrivateKey::getPrivateKey() const {
+ByteArray BtcPrivateKey::getPrivateKey() const
+{
     return key;
 }
 
-ByteArray PrivateKey::getPublicKey() const {
+ByteArray BtcPrivateKey::getPublicKey() const
+{
     if (compressed) {
         return Crypto::privKeyToCompressedPubKey(key);
     }
@@ -36,6 +39,7 @@ ByteArray PrivateKey::getPublicKey() const {
     }
 }
 
-ByteArray PrivateKey::sign(const ByteArray &hash) const {
+ByteArray BtcPrivateKey::sign(const ByteArray &hash) const
+{
     return Crypto::sign(key, hash);
 }

@@ -8,12 +8,13 @@
 
 #include "ByteArray.h"
 
-class PrivateKey {
+class BtcPrivateKey
+{
 public:
     /*
-     * @param key private key binary representation
+     * @param key private key binary representation ( = fromBase58Check(WIF))
      */
-    PrivateKey(const ByteArray &key);
+    BtcPrivateKey(const ByteArray &key);
 
     /*
      * @return private key
