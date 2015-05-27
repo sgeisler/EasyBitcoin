@@ -20,6 +20,28 @@ public:
      * @return ByteArray of the converted hex string
      */
     static ByteArray fromHex(const std::string &hex);
+
+    /*
+     * Encodes a ByteArray to hex string
+     * @param bytes data to encode
+     * @return hex encoded data
+     */
+    static std::string toHex(const ByteArray &bytes);
+
+    /*
+     * Converts base58 string to ByteArray
+     * @param base58 string with base58 encoded data
+     * @return ByteArray with the converted data
+     */
+    static ByteArray fromBase58(const std::string &base58);
+
+    /*
+     * Converts base58 string to ByteArray and performs signature check (throws runtime_error if it fails)
+     * @param base58 string with base58 encoded data
+     * @param version expected version byte (first byte)
+     * @return ByteArray with the converted data
+     */
+    static ByteArray fromBase58Check(const std::string &base58, Byte version);
 };
 
 
