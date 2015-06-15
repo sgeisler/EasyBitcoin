@@ -3,43 +3,43 @@
 //
 
 #include <stdexcept>
-#include <Crypto.h>
+
+#include "Crypto.h"
+#include "Conversions.h"
+#include "BtcPublicKey.h"
 #include "BtcPrivateKey.h"
 #include "Constants.h"
 
-BtcPrivateKey::BtcPrivateKey(const ByteArray &key)
+BtcPrivateKey::BtcPrivateKey(const ByteArray &key) : ByteArray()
 {
     if (key.size() == EC_PRIVATE_KEY_LENGTH) {
-        this->key = key;
+        this->insert(this->begin(), key.begin(), key.end());
         this->compressed = false;
         return;
     }
     else if (key.size() == EC_PRIVATE_KEY_LENGTH + 1) {
         if (key.back() == 1) {
-            this->key.insert(this->key.begin(), key.begin(), key.begin() + EC_PRIVATE_KEY_LENGTH);
+            this->insert(this->begin(), key.begin(), key.begin() + EC_PRIVATE_KEY_LENGTH);
             this->compressed = true;
+            return;
         }
     }
 
     throw std::runtime_error("Wrong key size!");
 }
 
-ByteArray BtcPrivateKey::getPrivateKey() const
-{
-    return key;
-}
-
-ByteArray BtcPrivateKey::getPublicKey() const
+BtcPublicKey BtcPrivateKey::getPublicKey() const
 {
     if (compressed) {
-        return Crypto::privKeyToCompressedPubKey(key);
+        return Crypto::privKeyToCompressedPubKey(*this);
     }
     else {
-        return Crypto::privKeyToPubKey(key);
+        return Crypto::privKeyToPubKey(*this);
     }
 }
 
 ByteArray BtcPrivateKey::sign(const ByteArray &hash) const
 {
-    return Crypto::sign(key, hash);
+    return Crypto::sign(*this, hash);
 }
+

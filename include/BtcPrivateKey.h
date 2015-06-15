@@ -7,8 +7,11 @@
 
 
 #include "ByteArray.h"
+#include "BtcPublicKey.h"
 
-class BtcPrivateKey
+#include "string"
+
+class BtcPrivateKey : public ByteArray
 {
 public:
     /*
@@ -17,14 +20,9 @@ public:
     BtcPrivateKey(const ByteArray &key);
 
     /*
-     * @return private key
-     */
-    ByteArray getPrivateKey() const;
-
-    /*
      * @return compressed or uncompressed public key
      */
-    ByteArray getPublicKey() const;
+    BtcPublicKey getPublicKey() const;
 
     /*
      * @param hash data to sign
@@ -33,7 +31,6 @@ public:
     ByteArray sign(const ByteArray &hash) const;
 
 private:
-    ByteArray key;
     bool compressed;
 };
 
