@@ -5,17 +5,9 @@ compiler:
 sudo: required
 
 install:
-  - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-         wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
-      && tar -xzf cmake-3.2.2-Linux-i386.tar.gz
-      && sudo cp -fR cmake-3.2.2-Linux-i386/* /usr
-      ;
-    else
-         brew update
-      && brew unlink cmake
-      && brew install cmake
-      ;
-    fi
+  - wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
+  - tar -xzf cmake-3.2.2-Linux-i386.tar.gz
+  - sudo cp -fR cmake-3.2.2-Linux-i386/* /usr
 
 script:
   - cmake .
