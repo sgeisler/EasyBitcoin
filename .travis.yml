@@ -2,8 +2,6 @@ language: cpp
 compiler:
   - gcc
 
-sudo: required
-
 script:
   - cmake .
   - make
