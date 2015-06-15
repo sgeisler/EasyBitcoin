@@ -10,11 +10,11 @@
 #include <stdexcept>
 #include <string>
 
-BtcPublicKey::BtcPublicKey(const ByteArray &pubKey)
+BtcPublicKey::BtcPublicKey(const ByteArray &pubKey) : ByteArray()
 {
     if ((pubKey.size() == EC_COMPRESSED_PUBLIC_KEY_LENGTH) || (pubKey.size() == EC_PUBLIC_KEY_LENGTH))
     {
-        *this = pubKey;
+        this->insert(this->begin(), pubKey.begin(), pubKey.end());
     }
     else
     {
