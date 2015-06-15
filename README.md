@@ -3,6 +3,9 @@ EasyBitcoin
 
 is intended to become a simple to use C++03 Bitcoin library.
 
+[![Build Status](https://travis-ci.org/sgeisler/EasyBitcoin.svg?branch=master)](https://travis-ci.org/sgeisler/EasyBitcoin)
+
+
 Why C++03
 ---------
 I want to build a native BlackBerry(R) Bitcoin wallet. The Momentics IDE and the qnx version of gcc does not support
