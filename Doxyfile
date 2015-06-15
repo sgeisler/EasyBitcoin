@@ -1,0 +1,3 @@
+JAVADOC_AUTOBRIEF      = YES
+DOXYFILE_ENCODING      = UTF-8
+PROJECT_NAME           = "Easy to use Bitcoin library"
