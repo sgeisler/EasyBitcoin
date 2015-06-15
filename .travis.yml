@@ -1,0 +1,15 @@
+language: cpp
+compiler:
+  - gcc
+
+befor_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install openssl openssl-dev -qq
+
+script:
+  - cmake .
+  - make
+  - EasyBitcoinTest
+
+after_success:
+  - make clean
