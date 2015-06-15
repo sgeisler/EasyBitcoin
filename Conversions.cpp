@@ -56,10 +56,19 @@ std::string Conversions::toHex(const ByteArray &bytes)
 
 ByteArray Conversions::fromBase58(const std::string &base58)
 {
-    ByteArray ret(base58.size() * 733 / 1000 + 1);
+    ByteArray base256(base58.size() * 733 / 1000 + 1);
+
+    std::string::const_iterator base58It = base58.begin();
+    int zeroes = 0;
+
+    while (base58It != base58.end() && *base58It == '1')
+    {
+        zeroes++;
+        base58It++;
+    }
 
     unsigned int carry;
-    for (std::string::const_iterator base58It = base58.begin(); base58It != base58.end(); base58It++)
+    for (; base58It != base58.end(); base58It++)
     {
         if ((*base58It) >= '1' && (*base58It) <= '9')
         {
@@ -90,22 +99,41 @@ ByteArray Conversions::fromBase58(const std::string &base58)
             throw std::runtime_error("One characte in the string isn't BASE58");
         }
 
-        for (ByteArray::reverse_iterator retIt = ret.rbegin(); retIt != ret.rend(); retIt++)
+        for (ByteArray::reverse_iterator retIt = base256.rbegin(); retIt != base256.rend(); retIt++)
         {
             carry += 58 * (*retIt);
             *retIt = carry % 256;
             carry /= 256;
         }
     }
+
+    ByteArray ret;
+    ByteArray::iterator base256It = base256.begin();
+
+    while (base256It != base256.end() && *base256It == 0)
+    {
+        base256It++;
+    }
+
+    ret.assign(zeroes, 0x00);
+    ret.insert(ret.end(), base256It, base256.end());
+
     return ret;
 }
 
 ByteArray Conversions::fromBase58Check(const std::string &base58, Byte version)
 {
     ByteArray ret = fromBase58(base58);
+
     if (ret[0] != version)
     {
-        throw std::runtime_error("Wrong version byte!");
+        ret.erase(ret.begin() + 1, ret.end());
+        throw std::runtime_error("Wrong version byte! (0x" + Conversions::toHex(ret) + ")");
+    }
+
+    if (ret.size() <= 4)
+    {
+        throw  std::runtime_error("data too short (no checksum found)");
     }
 
     ByteArray checksum = ByteArray(4);
@@ -128,4 +156,59 @@ ByteArray Conversions::fromBase58Check(const std::string &base58, Byte version)
     }
 
     return ret;
+}
+
+std::string Conversions::toBase58(const ByteArray &data)
+{
+    std::string base58 = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+
+    ByteArray encoded(data.size() * 138 / 100 + 1);
+
+    ByteArray::const_iterator dataIt = data.begin();
+    int zeroes = 0;
+
+    while (dataIt != data.end() && *dataIt == 0)
+    {
+        zeroes++;
+        dataIt++;
+    }
+
+    for (; dataIt != data.end(); dataIt++)
+    {
+        int carry = *dataIt;
+
+        for (ByteArray::reverse_iterator encodedIt = encoded.rbegin(); encodedIt != encoded.rend(); encodedIt++)
+        {
+            carry += 256 * (*encodedIt);
+            *encodedIt = carry % 58;
+            carry /= 58;
+        }
+    }
+
+    ByteArray::iterator encodedIt = encoded.begin();
+
+    while (encodedIt != encoded.end() && *encodedIt == 0)
+    {
+        encodedIt++;
+    }
+
+    std::string ret;
+    ret.assign(zeroes, '1');
+
+    while (encodedIt != encoded.end())
+    {
+        ret += base58[*(encodedIt++)];
+    }
+
+    return ret;
+}
+
+std::string Conversions::toBase58Check(ByteArray data, Byte version)
+{
+    data.insert(data.begin(), version);
+
+    ByteArray hash = Crypto::sha256(Crypto::sha256(data));
+    data.insert(data.end(), hash.begin(), hash.begin() + 4);
+
+    return toBase58(data);
 }

@@ -42,6 +42,21 @@ public:
      * @return ByteArray with the converted data
      */
     static ByteArray fromBase58Check(const std::string &base58, Byte version);
+
+    /*
+     * Encodes ByteArray base58
+     * @param data data that will be encoded
+     * @return string with base58 encoded data
+     */
+    static std::string toBase58(const ByteArray &data);
+
+    /*
+     * Encodes data base58 and adds hash for checking integrity
+     * @param data data that will be encoded
+     * @param version version byte (first byte) of the resulting string
+     * @return base58 encoded data with hash
+     */
+    static std::string toBase58Check(ByteArray data, Byte version);
 };
 
 
