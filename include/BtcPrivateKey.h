@@ -14,17 +14,17 @@
 class BtcPrivateKey : public ByteArray
 {
 public:
-    /*
+    /*!
      * @param key private key binary representation ( = fromBase58Check(WIF))
      */
     BtcPrivateKey(const ByteArray &key);
 
-    /*
+    /*!
      * @return compressed or uncompressed public key
      */
     BtcPublicKey getPublicKey() const;
 
-    /*
+    /*!
      * @param hash data to sign
      * @return signed data
      */
