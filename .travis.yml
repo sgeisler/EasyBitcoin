@@ -7,7 +7,7 @@ sudo: required
 script:
   - cmake .
   - make
-  - EasyBitcoinTest
+  - ./EasyBitcoinTest
 
 after_success:
   - make clean
