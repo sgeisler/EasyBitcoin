@@ -4,9 +4,20 @@ compiler:
 
 sudo: required
 
-befor_install:
-  - sudo apt-get update -qq
-  - sudo apt-get install openssl openssl-dev cmake -qq
+install:
+  - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+         wget http://www.cmake.org/files/v3.2/cmake-3.2.2-Linux-i386.tar.gz
+      && tar -xzf cmake-3.2.2-Linux-i386.tar.gz
+      && sudo cp -fR cmake-3.2.2-Linux-i386/* /usr
+      && sudo apt-get -qq update
+      && sudo apt-get -qq install openssl openssl-dev
+      ;
+    else
+         brew update
+      && brew unlink cmake
+      && brew install cmake
+      ;
+    fi
 
 script:
   - cmake .
