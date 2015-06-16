@@ -22,12 +22,12 @@ public:
     /*!
      * @return returns if the key is compressed
      */
-    bool isCompressed();
+    bool isCompressed() const;
 
     /*!
      * @return the Base58Check encoded address belonging to the key
      */
-    std::string getAddress();
+    std::string getAddress() const;
 };
 
 

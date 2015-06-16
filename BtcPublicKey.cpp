@@ -22,12 +22,12 @@ BtcPublicKey::BtcPublicKey(const ByteArray &pubKey) : ByteArray()
     }
 }
 
-bool BtcPublicKey::isCompressed()
+bool BtcPublicKey::isCompressed() const
 {
     return (this->size() == EC_COMPRESSED_PUBLIC_KEY_LENGTH);
 }
 
-std::string BtcPublicKey::getAddress()
+std::string BtcPublicKey::getAddress() const
 {
     return Conversions::toBase58Check(Crypto::ripemd160(Crypto::sha256(*this)), 0);
 }
