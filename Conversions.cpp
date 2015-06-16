@@ -225,3 +225,41 @@ ByteArray Conversions::fromUInt32(uint32_t num)
 
     return ret;
 }
+
+ByteArray Conversions::fromVarInt(uint64_t num)
+{
+    size_t len;
+    Byte firstByte;
+
+    if (num < 0xfd)
+    {
+        len = 0;
+        firstByte = (Byte) num;
+    }
+    else if (num <= 0xffff)
+    {
+        len = 2;
+        firstByte = 0xfd;
+    }
+    else if (num <= 0xffffffff)
+    {
+        len = 4;
+        firstByte = 0xfe;
+    }
+    else
+    {
+        len = 8;
+        firstByte = 0xff;
+    }
+
+    ByteArray ret(len + 1);
+    ret[0] = firstByte;
+
+    for (int bytePos = len; bytePos >= 1; --bytePos)
+    {
+        ret[bytePos] = num / (1 << (8 * (bytePos - 1)));
+        num %= (1 << (8 * (bytePos - 1)));
+    }
+
+    return ret;
+}

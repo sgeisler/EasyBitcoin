@@ -96,3 +96,8 @@ TEST_CASE("uint32 to bytes", "[fromUInt32]")
 {
     REQUIRE(Conversions::toHex(Conversions::fromUInt32(1234)) == "d2040000");
 }
+
+TEST_CASE("VarInt to bytes", "[fromVarInt]")
+{
+    REQUIRE(Conversions::toHex(Conversions::fromVarInt(1234567)) == "fe87d61200");
+}

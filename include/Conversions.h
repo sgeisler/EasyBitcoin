@@ -64,6 +64,13 @@ public:
      * @return byte representation of num
      */
     static ByteArray fromUInt32(uint32_t num);
+
+    /*!
+     * @see https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer
+     * @param num integer that will be encoded
+     * @return 1-9 bytes VarInt representation on num
+     */
+    static ByteArray fromVarInt(uint64_t num);
 };
 
 
