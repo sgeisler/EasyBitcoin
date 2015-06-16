@@ -60,10 +60,16 @@ public:
     static std::string toBase58Check(ByteArray data, Byte version);
 
     /*!
-     * @param num integer that will be encoded to ByteArray
+     * @param num 32 bit integer that will be encoded to ByteArray
      * @return byte representation of num
      */
     static ByteArray fromUInt32(uint32_t num);
+
+    /*!
+     * @param num 64 bit integer that will be encoded to ByteArray
+     * @return byte representation of num
+     */
+    static ByteArray fromUInt64(uint64_t num);
 
     /*!
      * @see https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer

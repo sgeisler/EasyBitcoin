@@ -228,6 +228,20 @@ ByteArray Conversions::fromUInt32(uint32_t num)
     return ret;
 }
 
+
+ByteArray Conversions::fromUInt64(uint64_t num)
+{
+    ByteArray ret(4);
+
+    for (unsigned int bNum = 0; bNum < 8; bNum++)
+    {
+        ret[7 - bNum] = (Byte) (num / (1 << (8 * (7 - bNum))));
+        num %= (1 << (8 * (7 - bNum)));
+    }
+
+    return ret;
+}
+
 ByteArray Conversions::fromVarInt(uint64_t num)
 {
     size_t len;
