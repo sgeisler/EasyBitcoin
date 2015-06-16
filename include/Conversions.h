@@ -6,6 +6,7 @@
 #define EASYBITCOIN_CONVERSIONS_H
 
 #include <string>
+#include <stdint.h>
 
 #include "ByteArray.h"
 
@@ -58,6 +59,11 @@ public:
      */
     static std::string toBase58Check(ByteArray data, Byte version);
 
+    /*!
+     * @param num integer that will be encoded to ByteArray
+     * @return byte representation of num
+     */
+    static ByteArray fromUInt32(uint32_t num);
 };
 
 

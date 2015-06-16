@@ -212,3 +212,16 @@ std::string Conversions::toBase58Check(ByteArray data, Byte version)
 
     return toBase58(data);
 }
+
+ByteArray Conversions::fromUInt32(uint32_t num)
+{
+    ByteArray ret(4);
+
+    for (unsigned int bNum = 0; bNum < 4; bNum++)
+    {
+        ret[3 - bNum] = num / (1 << (8 * (3 - bNum)));
+        num %= (1 << (8 * (3 - bNum)));
+    }
+
+    return ret;
+}

@@ -73,7 +73,7 @@ TEST_CASE("Decode base58 check", "[fromBase58Check]")
 
 }
 
-TEST_CASE("Encode base58 check", "toBase58Check")
+TEST_CASE("Encode base58 check", "[toBase58Check]")
 {
     REQUIRE(Conversions::toBase58Check(Conversions::fromBase58Check("1LtyTmydQP28esyweRn2mJog5FkQxRh6LD", 0), 0) ==
             "1LtyTmydQP28esyweRn2mJog5FkQxRh6LD");
@@ -90,4 +90,9 @@ TEST_CASE("privKey to pubKey to address")
     REQUIRE(Conversions::toHex(privKey2.getPublicKey()) ==
             "04a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd5b8dec5235a0fa8722476c7709c02559e3aa73aa03918ba2d492eea75abea235");
     REQUIRE(privKey2.getPublicKey().getAddress() == "1HZwkjkeaoZfTSaJxDw6aKkxp45agDiEzN");
+}
+
+TEST_CASE("uint32 to bytes", "[fromUInt32]")
+{
+    REQUIRE(Conversions::toHex(Conversions::fromUInt32(1234)) == "d2040000");
 }
