@@ -71,6 +71,12 @@ public:
      * @return 1-9 bytes VarInt representation on num
      */
     static ByteArray fromVarInt(uint64_t num);
+
+    /*!
+     * @param inp ByteArray that will be reversed
+     * @return reversed ByteArray
+     */
+    static ByteArray reverse(ByteArray inp);
 };
 
 

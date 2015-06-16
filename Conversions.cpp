@@ -3,9 +3,11 @@
 //
 
 #include "Conversions.h"
+#include "Crypto.h"
+
 #include <stdexcept>
-#include <Crypto.h>
 #include <iostream>
+#include <algorithm>
 
 ByteArray Conversions::fromHex(const std::string &hex)
 {
@@ -72,27 +74,27 @@ ByteArray Conversions::fromBase58(const std::string &base58)
     {
         if ((*base58It) >= '1' && (*base58It) <= '9')
         {
-            carry = (*base58It) - '1';
+            carry = (unsigned int) ((*base58It) - '1');
         }
         else if ((*base58It) >= 'A' && (*base58It) <= 'H')
         {
-            carry = (*base58It) - 'A' + 9;
+            carry = (unsigned int) ((*base58It) - 'A' + 9);
         }
         else if ((*base58It) >= 'J' && (*base58It) <= 'N')
         {
-            carry = (*base58It) - 'J' + 17;
+            carry = (unsigned int) ((*base58It) - 'J' + 17);
         }
         else if ((*base58It) >= 'P' && (*base58It) <= 'Z')
         {
-            carry = (*base58It) - 'P' + 22;
+            carry = (unsigned int) ((*base58It) - 'P' + 22);
         }
         else if ((*base58It) >= 'a' && (*base58It) <= 'k')
         {
-            carry = (*base58It) - 'a' + 33;
+            carry = (unsigned int) ((*base58It) - 'a' + 33);
         }
         else if ((*base58It) >= 'm' && (*base58It) <= 'z')
         {
-            carry = (*base58It) - 'm' + 44;
+            carry = (unsigned int) ((*base58It) - 'm' + 44);
         }
         else
         {
@@ -102,7 +104,7 @@ ByteArray Conversions::fromBase58(const std::string &base58)
         for (ByteArray::reverse_iterator retIt = base256.rbegin(); retIt != base256.rend(); retIt++)
         {
             carry += 58 * (*retIt);
-            *retIt = carry % 256;
+            *retIt = (Byte) (carry % 256);
             carry /= 256;
         }
     }
@@ -165,7 +167,7 @@ std::string Conversions::toBase58(const ByteArray &data)
     ByteArray encoded(data.size() * 138 / 100 + 1);
 
     ByteArray::const_iterator dataIt = data.begin();
-    int zeroes = 0;
+    unsigned int zeroes = 0;
 
     while (dataIt != data.end() && *dataIt == 0)
     {
@@ -180,7 +182,7 @@ std::string Conversions::toBase58(const ByteArray &data)
         for (ByteArray::reverse_iterator encodedIt = encoded.rbegin(); encodedIt != encoded.rend(); encodedIt++)
         {
             carry += 256 * (*encodedIt);
-            *encodedIt = carry % 58;
+            *encodedIt = (Byte) (carry % 58);
             carry /= 58;
         }
     }
@@ -219,7 +221,7 @@ ByteArray Conversions::fromUInt32(uint32_t num)
 
     for (unsigned int bNum = 0; bNum < 4; bNum++)
     {
-        ret[3 - bNum] = num / (1 << (8 * (3 - bNum)));
+        ret[3 - bNum] = (Byte) (num / (1 << (8 * (3 - bNum))));
         num %= (1 << (8 * (3 - bNum)));
     }
 
@@ -257,9 +259,15 @@ ByteArray Conversions::fromVarInt(uint64_t num)
 
     for (int bytePos = len; bytePos >= 1; --bytePos)
     {
-        ret[bytePos] = num / (1 << (8 * (bytePos - 1)));
+        ret[bytePos] = (Byte) (num / (1 << (8 * (bytePos - 1))));
         num %= (1 << (8 * (bytePos - 1)));
     }
 
     return ret;
+}
+
+ByteArray Conversions::reverse(ByteArray inp)
+{
+    std::reverse(inp.begin(), inp.end());
+    return inp;
 }
