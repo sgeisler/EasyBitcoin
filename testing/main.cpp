@@ -103,22 +103,11 @@ TEST_CASE("VarInt to bytes", "[fromVarInt]")
     REQUIRE(Conversions::toHex(Conversions::fromVarInt(1234567)) == "fe87d61200");
 }
 
-TEST_CASE("txIn to bytes")
+TEST_CASE("txIn get PubKeyHash")
 {
-    TransactionInput t(Conversions::reverse(Conversions::fromHex(
-                               "c8ab2a4fde8029c72f9689f653871f634c6a51bcd0fd4010b6995702b9713988")),
-                       0,
-                       Conversions::fromHex("76a914b7675e0b90a09cb97674702be07b119c989b835088ac"),
-                       1000);
-    std::cout << Conversions::toHex(t.toBytes()) << std::endl;
-
-    TransactionInput tSigned = TransactionInput::signPubKeyHashInput(t,
-                                                                     BtcPrivateKey(
-                                                                             Conversions::fromBase58Check(
-                                                                                     "L5G5BA4Veb4qvbgFHH4bNwVxJkRnAkSq8QUbPQ5YR57FZdKBPzm8",
-                                                                                     0x80)
-                                                                     ));
-    std::cout << Conversions::toHex(tSigned.toBytes()) << std::endl;
-    std::cout << Conversions::toHex(tSigned.scriptSig) << std::endl;
-
+    REQUIRE(TransactionInput(ByteArray(),
+                             0,
+                             Conversions::fromHex("76a914b7675e0b90a09cb97674702be07b119c989b835088ac"),
+                             0)
+                    .getPubKeyHash().toHex() == "b7675e0b90a09cb97674702be07b119c989b8350");
 }

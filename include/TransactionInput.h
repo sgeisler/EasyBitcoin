@@ -13,22 +13,22 @@ struct TransactionInput
 {
     TransactionInput(const ByteArray &reversePrevHash,
                      uint32_t outputIndex,
-                     const ByteArray &scriptSig,
+                     const ByteArray &script,
                      uint64_t value,
                      uint32_t sequence = 0xffffffff,
                      bool isSigned = false);
 
     ByteArray reversePrevHash;
     uint32_t outputIndex;
-    ByteArray scriptSig;
+    ByteArray script;
     uint32_t sequence;
     uint64_t value;
 
     bool isSigned;
 
-    ByteArray toBytes() const;
+    bool isPayToPubKeyHash();
 
-    static TransactionInput signPubKeyHashInput(TransactionInput txIn, const BtcPrivateKey &privKey);
+    ByteArray getPubKeyHash();
 };
 
 

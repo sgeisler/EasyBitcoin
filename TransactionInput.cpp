@@ -2,6 +2,7 @@
 // Created by Sebastian on 27.05.2015.
 //
 
+#include <stdexcept>
 #include "TransactionInput.h"
 
 #include "Conversions.h"
@@ -10,60 +11,49 @@
 
 TransactionInput::TransactionInput(const ByteArray &reversePrevHash,
                                    uint32_t outputIndex,
-                                   const ByteArray &scriptSig,
+                                   const ByteArray &script,
                                    uint64_t value,
                                    uint32_t sequence,
                                    bool isSigned)
         : reversePrevHash(reversePrevHash),
           outputIndex(outputIndex),
-          scriptSig(scriptSig),
+          script(script),
           sequence(sequence),
           value(value),
           isSigned(isSigned)
 {
 }
 
-
-ByteArray TransactionInput::toBytes() const
+bool TransactionInput::isPayToPubKeyHash()
 {
-    ByteArray ret;
-    ret.insert(ret.end(), reversePrevHash.begin(), reversePrevHash.end());
+    if (script.size() != 25)
+        return false;
 
-    ByteArray outputIndexBytes = Conversions::fromUInt32(outputIndex);
-    ret.insert(ret.end(), outputIndexBytes.begin(), outputIndexBytes.end());
+    if (script[0] != 0x76)
+        return false;
 
-    ByteArray scriptLenBytes = Conversions::fromVarInt(scriptSig.size());
-    ret.insert(ret.end(), scriptLenBytes.begin(), scriptLenBytes.end());
+    if (script[1] != 0xa9)
+        return false;
 
-    ret.insert(ret.end(), scriptSig.begin(), scriptSig.end());
+    if (script[2] != 0x14)
+        return false;
 
-    ByteArray sequenceBytes = Conversions::fromUInt32(sequence);
-    ret.insert(ret.end(), sequenceBytes.begin(), sequenceBytes.end());
+    if (script[23] != 0x88)
+        return false;
 
-    return ret;
+    if (script[24] != 0xac)
+        return false;
+
+    return true;
 }
 
-TransactionInput TransactionInput::signPubKeyHashInput(TransactionInput txIn, const BtcPrivateKey &privKey)
+ByteArray TransactionInput::getPubKeyHash()
 {
-    ByteArray txInBytes = txIn.toBytes();
-    ByteArray sigHashAll = Conversions::fromUInt32(1);
-    txInBytes.insert(txInBytes.end(), sigHashAll.begin(), sigHashAll.end());
+    if (!isPayToPubKeyHash())
+        throw std::runtime_error("Transaction isn't PayToPubKeyHash");
 
-    ByteArray txInHash = Crypto::sha256(Crypto::sha256(txInBytes));
-    ByteArray txInScriptSig = Crypto::sign(privKey, txInHash);
+    ByteArray ret;
+    ret.insert(ret.end(), script.begin() + 3, script.begin() + 23);
 
-    txIn.scriptSig = ByteArray();
-    txIn.scriptSig.push_back((Byte) (txInScriptSig.size() + 1));
-
-    txIn.scriptSig.insert(txIn.scriptSig.end(), txInScriptSig.begin(), txInScriptSig.end());
-    txIn.scriptSig.push_back((Byte) 1);
-
-    ByteArray pubKey = privKey.getPublicKey();
-    txIn.scriptSig.push_back((Byte) pubKey.size());
-
-    txIn.scriptSig.insert(txIn.scriptSig.end(), pubKey.begin(), pubKey.end());
-
-    txIn.isSigned = true;
-
-    return txIn;
+    return ret;
 }
