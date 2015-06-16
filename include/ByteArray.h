@@ -27,11 +27,11 @@ public:
 
     ByteArray operator+(const ByteArray &other) const;
 
-    ByteArray toHex() const;
+    std::string toHex() const;
 
-    ByteArray toBase58() const;
+    std::string toBase58() const;
 
-    ByteArray toBase58Check(Byte version) const;
+    std::string toBase58Check(Byte version) const;
 
     ByteArray sha256() const;
 

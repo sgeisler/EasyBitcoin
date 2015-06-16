@@ -18,17 +18,17 @@ ByteArray ByteArray::operator+(const ByteArray &other) const
     return ret;
 }
 
-ByteArray ByteArray::toHex() const
+std::string ByteArray::toHex() const
 {
     return Conversions::toHex(*this);
 }
 
-ByteArray ByteArray::toBase58() const
+std::string ByteArray::toBase58() const
 {
     return Conversions::toBase58(*this);
 }
 
-ByteArray ByteArray::toBase58Check(Byte version) const
+std::string ByteArray::toBase58Check(Byte version) const
 {
     return Conversions::toBase58Check(*this, version);
 }
