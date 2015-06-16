@@ -29,19 +29,19 @@ bool TransactionInput::isPayToPubKeyHash()
     if (script.size() != 25)
         return false;
 
-    if (script[0] != 0x76)
+    if (script[0] != OP_DUP)
         return false;
 
-    if (script[1] != 0xa9)
+    if (script[1] != OP_HASH160)
         return false;
 
     if (script[2] != 0x14)
         return false;
 
-    if (script[23] != 0x88)
+    if (script[23] != OP_EQUALVERIFY)
         return false;
 
-    if (script[24] != 0xac)
+    if (script[24] != OP_CHECKSIG)
         return false;
 
     return true;

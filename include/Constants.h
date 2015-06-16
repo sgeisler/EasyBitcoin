@@ -9,4 +9,10 @@
 #define EC_PUBLIC_KEY_LENGTH 65
 #define EC_COMPRESSED_PUBLIC_KEY_LENGTH 33
 
+//OP codes
+#define OP_DUP 0x76
+#define OP_HASH160 0xa9
+#define OP_EQUALVERIFY 0x88
+#define OP_CHECKSIG 0xac
+
 #endif //EASYBITCOIN_CONSTANTS_H
