@@ -221,8 +221,8 @@ ByteArray Conversions::fromUInt32(uint32_t num)
 
     for (unsigned int bNum = 0; bNum < 4; bNum++)
     {
-        ret[3 - bNum] = (Byte) (num / (1 << (8 * (3 - bNum))));
-        num %= (1 << (8 * (3 - bNum)));
+        ret[3 - bNum] = (Byte) (num / (((uint32_t) 1) << (8 * (3 - bNum))));
+        num %= (((uint32_t) 1) << (8 * (3 - bNum)));
     }
 
     return ret;
@@ -235,8 +235,8 @@ ByteArray Conversions::fromUInt64(uint64_t num)
 
     for (unsigned int bNum = 0; bNum < 8; bNum++)
     {
-        ret[7 - bNum] = (Byte) (num / (1 << (8 * (7 - bNum))));
-        num %= (1 << (8 * (7 - bNum)));
+        ret[7 - bNum] = (Byte) (num / (((uint64_t) 1) << (8 * (7 - bNum))));
+        num %= (((uint64_t) 1) << (8 * (7 - bNum)));
     }
 
     return ret;
