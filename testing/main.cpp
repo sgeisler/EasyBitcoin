@@ -6,6 +6,7 @@
 #include <Conversions.h>
 #include <BtcPrivateKey.h>
 #include <TransactionInput.h>
+#include <Transaction.h>
 
 using namespace std;
 
@@ -110,4 +111,18 @@ TEST_CASE("txIn get PubKeyHash")
                              Conversions::fromHex("76a914b7675e0b90a09cb97674702be07b119c989b835088ac"),
                              0)
                     .getPubKeyHash().toHex() == "b7675e0b90a09cb97674702be07b119c989b8350");
+}
+
+TEST_CASE("sign tx")
+{
+    //I cant test against a known good tx, because the sig. changes evry time (rnd) so it will be ok for now if it doesn't throw an error
+    Transaction t;
+    t.addInput(TransactionInput(Conversions::reverse(
+            Conversions::fromHex("c8ab2a4fde8029c72f9689f653871f634c6a51bcd0fd4010b6995702b9713988")), 0,
+                                Conversions::fromHex("76a914b7675e0b90a09cb97674702be07b119c989b835088ac"), 100000));
+    t.addOutput(TransactionOutput("1HikVCL5PsR75toN23yEifLqmg8uXAepoz", 90000));
+    t.signPubKeyHashInput(0, BtcPrivateKey("L5G5BA4Veb4qvbgFHH4bNwVxJkRnAkSq8QUbPQ5YR57FZdKBPzm8"));
+
+    //for testing:
+    //std::cout << t.serializeTransaction().toHex() << std::endl;
 }
