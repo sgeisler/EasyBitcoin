@@ -7,22 +7,21 @@
 
 #include "ByteArray.h"
 
-class Crypto
+namespace Crypto
 {
-public:
     /*!
      * hashes binary data using SHA256
      * @param input binary data that will be hashed
      * @return ByteArray containing the hash
      */
-    static ByteArray sha256(const ByteArray &input);
+    ByteArray sha256(const ByteArray &input);
 
     /*!
      * hashes binary data using RIPEMD160
      * @param input binary data that will be hashed
      * @return ByteArray containing the hash
      */
-    static ByteArray ripemd160(const ByteArray &input);
+    ByteArray ripemd160(const ByteArray &input);
 
     /*!
      * Signs binary data using ECDSA
@@ -30,21 +29,21 @@ public:
      * @param hash binary data that will be signed
      * @return signed data
      */
-    static ByteArray sign(const ByteArray &privKey, const ByteArray hash);
+    ByteArray sign(const ByteArray &privKey, const ByteArray hash);
 
     /*!
      * Derives the public key from the private key
      * @param privKey private key
      * @return public key
      */
-    static ByteArray privKeyToPubKey(const ByteArray &privKey);
+    ByteArray privKeyToPubKey(const ByteArray &privKey);
 
     /*!
      * Derives the compressed public key from the private key
      * @param privKey private key
      * @return compressed public key
      */
-    static ByteArray privKeyToCompressedPubKey(const ByteArray &privKey);
+    ByteArray privKeyToCompressedPubKey(const ByteArray &privKey);
 };
 
 

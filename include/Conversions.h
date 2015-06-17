@@ -11,10 +11,8 @@
 #include "ByteArray.h"
 #include "Base58CheckDecode.h"
 
-class Conversions
+namespace Conversions
 {
-public:
-
     /*!
      * Converts hex std::string to ByteArray, if the string has an odd size a '0' will be appended.
      *
@@ -22,28 +20,28 @@ public:
      * @see ByteArray
      * @return ByteArray of the converted hex string
      */
-    static ByteArray fromHex(const std::string &hex);
+    ByteArray fromHex(const std::string &hex);
 
     /*!
      * Encodes a ByteArray to hex string
      * @param bytes data to encode
      * @return hex encoded data
      */
-    static std::string toHex(const ByteArray &bytes);
+    std::string toHex(const ByteArray &bytes);
 
     /*!
      * Converts base58 string to ByteArray
      * @param base58 string with base58 encoded data
      * @return ByteArray with the converted data
      */
-    static ByteArray fromBase58(const std::string &base58);
+    ByteArray fromBase58(const std::string &base58);
 
     /*!
      * Converts base58 string to ByteArray and performs signature check (throws runtime_error if it fails)
      * @param base58 string with base58 encoded data
      * @return struct with version and data
      */
-    static Base58CheckDecoded fromBase58Check(const std::string &base58);
+    Base58CheckDecoded fromBase58Check(const std::string &base58);
 
     /*!
      * Converts base58 string to ByteArray and performs signature check (throws runtime_error if it fails)
@@ -51,14 +49,14 @@ public:
      * @param version expected version byte (first byte)
      * @return ByteArray with the converted data
      */
-    static ByteArray fromBase58Check(const std::string &base58, Byte version);
+    ByteArray fromBase58Check(const std::string &base58, Byte version);
 
     /*!
      * Encodes ByteArray base58
      * @param data data that will be encoded
      * @return string with base58 encoded data
      */
-    static std::string toBase58(const ByteArray &data);
+    std::string toBase58(const ByteArray &data);
 
     /*!
      * Encodes data base58 and adds hash for checking integrity
@@ -66,32 +64,32 @@ public:
      * @param version version byte (first byte) of the resulting string
      * @return base58 encoded data with hash
      */
-    static std::string toBase58Check(ByteArray data, Byte version);
+    std::string toBase58Check(ByteArray data, Byte version);
 
     /*!
      * @param num 32 bit integer that will be encoded to ByteArray
      * @return byte representation of num
      */
-    static ByteArray fromUInt32(uint32_t num);
+    ByteArray fromUInt32(uint32_t num);
 
     /*!
      * @param num 64 bit integer that will be encoded to ByteArray
      * @return byte representation of num
      */
-    static ByteArray fromUInt64(uint64_t num);
+    ByteArray fromUInt64(uint64_t num);
 
     /*!
      * @see https://en.bitcoin.it/wiki/Protocol_documentation#Variable_length_integer
      * @param num integer that will be encoded
      * @return 1-9 bytes VarInt representation on num
      */
-    static ByteArray fromVarInt(uint64_t num);
+    ByteArray fromVarInt(uint64_t num);
 
     /*!
      * @param inp ByteArray that will be reversed
      * @return reversed ByteArray
      */
-    static ByteArray reverse(ByteArray inp);
+    ByteArray reverse(ByteArray inp);
 };
 
 
