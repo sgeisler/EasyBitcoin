@@ -4,6 +4,7 @@
 
 #include "ByteArray.h"
 #include "Crypto.h"
+#include "Conversions.h"
 
 void ByteArray::operator+=(const ByteArray &other)
 {

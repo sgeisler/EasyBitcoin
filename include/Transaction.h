@@ -20,10 +20,6 @@ public:
 
     void addOutput(const TransactionOutput &out);
 
-    uint64_t getFees();
-
-    uint64_t getRecommendedFees();
-
     ByteArray getHashAllForInput(std::vector<TransactionInput>::size_type inputNumber);
 
     void signPubKeyHashInput(std::vector<TransactionInput>::size_type inputNumber, const BtcPrivateKey &privKey);
