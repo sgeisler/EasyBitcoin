@@ -123,31 +123,28 @@ ByteArray Conversions::fromBase58(const std::string &base58)
     return ret;
 }
 
-ByteArray Conversions::fromBase58Check(const std::string &base58, Byte version)
+Base58CheckDecoded Conversions::fromBase58Check(const std::string &base58)
 {
-    ByteArray ret = fromBase58(base58);
+    Base58CheckDecoded ret;
+    ByteArray dec = fromBase58(base58);
 
-    if (ret[0] != version)
-    {
-        ret.erase(ret.begin() + 1, ret.end());
-        throw std::runtime_error("Wrong version byte! (0x" + Conversions::toHex(ret) + ")");
-    }
-
-    if (ret.size() <= 4)
+    if (dec.size() <= 4)
     {
         throw  std::runtime_error("data too short (no checksum found)");
     }
 
+    ret.version = dec[0];
+
     ByteArray checksum = ByteArray(4);
     for (ByteArray::size_type i = 0; i < 4; i += 1)
     {
-        checksum[3 - i] = ret.back();
-        ret.pop_back();
+        checksum[3 - i] = dec.back();
+        dec.pop_back();
     }
 
-    ByteArray hash = Crypto::sha256(Crypto::sha256(ret));
+    ByteArray hash = Crypto::sha256(Crypto::sha256(dec));
 
-    ret.erase(ret.begin(), ret.begin() + 1);
+    dec.erase(dec.begin(), dec.begin() + 1);
 
     for (ByteArray::size_type i = 0; i < 4; i += 1)
     {
@@ -157,7 +154,20 @@ ByteArray Conversions::fromBase58Check(const std::string &base58, Byte version)
         }
     }
 
+    ret.data = dec;
+
     return ret;
+}
+
+ByteArray Conversions::fromBase58Check(const std::string &base58, Byte version)
+{
+    Base58CheckDecoded ret = fromBase58Check(base58);
+    if (ret.version != version)
+    {
+        throw std::runtime_error("Wrong version byte!)");
+    }
+
+    return ret.data;
 }
 
 std::string Conversions::toBase58(const ByteArray &data)
@@ -285,3 +295,4 @@ ByteArray Conversions::reverse(ByteArray inp)
     std::reverse(inp.begin(), inp.end());
     return inp;
 }
+

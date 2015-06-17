@@ -6,11 +6,10 @@
 #define EASYBITCOIN_BYTEARRAY_H
 
 #include <vector>
+#include <string>
 
 class ByteArray;
 typedef unsigned char Byte;
-
-#include "Conversions.h"
 
 class ByteArray : public std::vector<Byte>
 {

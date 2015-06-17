@@ -9,10 +9,12 @@
 #include <stdint.h>
 
 #include "ByteArray.h"
+#include "Base58CheckDecode.h"
 
 class Conversions
 {
 public:
+
     /*!
      * Converts hex std::string to ByteArray, if the string has an odd size a '0' will be appended.
      *
@@ -35,6 +37,13 @@ public:
      * @return ByteArray with the converted data
      */
     static ByteArray fromBase58(const std::string &base58);
+
+    /*!
+     * Converts base58 string to ByteArray and performs signature check (throws runtime_error if it fails)
+     * @param base58 string with base58 encoded data
+     * @return struct with version and data
+     */
+    static Base58CheckDecoded fromBase58Check(const std::string &base58);
 
     /*!
      * Converts base58 string to ByteArray and performs signature check (throws runtime_error if it fails)

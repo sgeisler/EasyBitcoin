@@ -3,8 +3,9 @@
 //
 
 #include <stdexcept>
-#include "TransactionOutput.h"
 
+#include "TransactionOutput.h"
+#include "Conversions.h"
 #include "Constants.h"
 
 TransactionOutput::TransactionOutput(ByteArray scriptPubKey, uint64_t value)
