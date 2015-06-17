@@ -25,6 +25,8 @@ public:
 
     void operator+=(const ByteArray &other);
 
+    void operator+=(const Byte &other);
+
     ByteArray operator+(const ByteArray &other) const;
 
     std::string toHex() const;
