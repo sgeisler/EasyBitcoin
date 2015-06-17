@@ -231,7 +231,7 @@ ByteArray Conversions::fromUInt32(uint32_t num)
 
 ByteArray Conversions::fromUInt64(uint64_t num)
 {
-    ByteArray ret(4);
+    ByteArray ret(8);
 
     for (unsigned int bNum = 0; bNum < 8; bNum++)
     {
