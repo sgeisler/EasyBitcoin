@@ -20,6 +20,11 @@ public:
     BtcPrivateKey(const ByteArray &key);
 
     /*!
+     * @param wifKey wallet import format key
+     */
+    BtcPrivateKey(const std::string &wifKey);
+
+    /*!
      * @return compressed or uncompressed public key
      */
     BtcPublicKey getPublicKey() const;

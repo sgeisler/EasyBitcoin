@@ -28,6 +28,28 @@ BtcPrivateKey::BtcPrivateKey(const ByteArray &key) : ByteArray()
     throw std::runtime_error("Wrong key size!");
 }
 
+BtcPrivateKey::BtcPrivateKey(const std::string &wifKey)
+{
+    ByteArray key = Conversions::fromBase58Check(wifKey, 0x80);
+    if (key.size() == EC_PRIVATE_KEY_LENGTH)
+    {
+        this->insert(this->begin(), key.begin(), key.end());
+        this->compressed = false;
+        return;
+    }
+    else if (key.size() == EC_PRIVATE_KEY_LENGTH + 1)
+    {
+        if (key.back() == 1)
+        {
+            this->insert(this->begin(), key.begin(), key.begin() + EC_PRIVATE_KEY_LENGTH);
+            this->compressed = true;
+            return;
+        }
+    }
+
+    throw std::runtime_error("Wrong key size!");
+}
+
 BtcPublicKey BtcPrivateKey::getPublicKey() const
 {
     if (compressed) {

@@ -7,6 +7,7 @@
 
 
 #include "ByteArray.h"
+#include "Conversions.h"
 
 #include <string>
 
