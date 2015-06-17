@@ -10,6 +10,11 @@ void ByteArray::operator+=(const ByteArray &other)
     this->insert(this->end(), other.begin(), other.end());
 }
 
+void ByteArray::operator+=(const Byte &other)
+{
+    this->push_back(other);
+}
+
 ByteArray ByteArray::operator+(const ByteArray &other) const
 {
     ByteArray ret;
