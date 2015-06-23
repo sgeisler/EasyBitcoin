@@ -67,6 +67,12 @@ namespace Conversions
     std::string toBase58Check(ByteArray data, Byte version);
 
     /*!
+     * @param num 16 bit integer that will be encoded to ByteArray
+     * @return byte representation of num
+     */
+    ByteArray fromUInt16(uint16_t num);
+
+    /*!
      * @param num 32 bit integer that will be encoded to ByteArray
      * @return byte representation of num
      */
@@ -84,6 +90,24 @@ namespace Conversions
      * @return 1-9 bytes VarInt representation on num
      */
     ByteArray fromVarInt(uint64_t num);
+
+    /*!
+     * @param data Byte representation of an uint16 (min. 2 Bytes, the first two bytes will be converted, remaining Bytes will be ignored)
+     * @return converted uint16
+     */
+    uint16_t toUInt16(const ByteArray &data);
+
+    /*!
+     * @param data Byte representation of an uint32 (min. 4 Bytes, the first two bytes will be converted, remaining Bytes will be ignored)
+     * @return converted uint16
+     */
+    uint32_t toUInt32(const ByteArray &data);
+
+    /*!
+     * @param data Byte representation of an uint64 (min. 8 Bytes, the first two bytes will be converted, remaining Bytes will be ignored)
+     * @return converted uint16
+     */
+    uint64_t toUInt64(const ByteArray &data);
 
     /*!
      * @param inp ByteArray that will be reversed

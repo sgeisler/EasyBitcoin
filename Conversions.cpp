@@ -135,25 +135,15 @@ Base58CheckDecoded Conversions::fromBase58Check(const std::string &base58)
 
     ret.version = dec[0];
 
-    ByteArray checksum = ByteArray(4);
-    for (ByteArray::size_type i = 0; i < 4; i += 1)
-    {
-        checksum[3 - i] = dec.back();
-        dec.pop_back();
-    }
+    ByteArray checksum = dec.getSection(dec.size() - 4, 4);
+    dec.erase(dec.begin() + (dec.size() - 4), dec.end());
 
-    ByteArray hash = Crypto::sha256(Crypto::sha256(dec));
+    if (dec.sha256().sha256().getSection(0, 4) != checksum)
+    {
+        throw std::runtime_error("Checksum not valid, data corrupted?");
+    }
 
     dec.erase(dec.begin(), dec.begin() + 1);
-
-    for (ByteArray::size_type i = 0; i < 4; i += 1)
-    {
-        if (hash[i] != checksum[i])
-        {
-            throw std::runtime_error("Checksum not valid, data corrupted?");
-        }
-    }
-
     ret.data = dec;
 
     return ret;
@@ -225,6 +215,19 @@ std::string Conversions::toBase58Check(ByteArray data, Byte version)
     return toBase58(data);
 }
 
+ByteArray Conversions::fromUInt16(uint16_t num)
+{
+    ByteArray ret(2);
+
+    for (unsigned int bNum = 0; bNum < 2; bNum++)
+    {
+        ret[3 - bNum] = (Byte) (num / (((uint16_t) 1) << (8 * (1 - bNum))));
+        num %= (((uint16_t) 1) << (8 * (1 - bNum)));
+    }
+
+    return ret;
+}
+
 ByteArray Conversions::fromUInt32(uint32_t num)
 {
     ByteArray ret(4);
@@ -290,9 +293,53 @@ ByteArray Conversions::fromVarInt(uint64_t num)
     return ret;
 }
 
+uint16_t Conversions::toUInt16(const ByteArray &data)
+{
+    if (data.size() < 2)
+        throw std::runtime_error("can't convert data to uint16, data too short!");
+
+    uint16_t ret = 0;
+
+    for (unsigned int byteNum = 0; byteNum < 2; byteNum++)
+    {
+        ret += (((uint16_t) 1) << (8 * (1 - byteNum))) * data[byteNum];
+    }
+
+    return ret;
+}
+
+uint32_t Conversions::toUInt32(const ByteArray &data)
+{
+    if (data.size() < 4)
+        throw std::runtime_error("can't convert data to uint16, data too short!");
+
+    uint32_t ret = 0;
+
+    for (unsigned int byteNum = 0; byteNum < 4; byteNum++)
+    {
+        ret += (((uint32_t) 1) << (8 * (3 - byteNum))) * data[byteNum];
+    }
+
+    return ret;
+}
+
+uint64_t Conversions::toUInt64(const ByteArray &data)
+{
+    if (data.size() < 8)
+        throw std::runtime_error("can't convert data to uint16, data too short!");
+
+    uint64_t ret = 0;
+
+    for (unsigned int byteNum = 0; byteNum < 8; byteNum++)
+    {
+        ret += (((uint64_t) 1) << (8 * (7 - byteNum))) * data[byteNum];
+    }
+
+    return ret;
+}
+
 ByteArray Conversions::reverse(ByteArray inp)
 {
     std::reverse(inp.begin(), inp.end());
     return inp;
 }
-

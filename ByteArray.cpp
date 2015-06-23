@@ -2,6 +2,7 @@
 // Created by Sebastian on 16.06.2015.
 //
 
+#include <stdexcept>
 #include "ByteArray.h"
 #include "Crypto.h"
 #include "Conversions.h"
@@ -47,4 +48,18 @@ ByteArray ByteArray::sha256() const
 ByteArray ByteArray::ripemd160() const
 {
     return Crypto::ripemd160(*this);
+}
+
+ByteArray ByteArray::getSection(ByteArray::size_type begin, ByteArray::size_type len)
+{
+    if (begin + len > size())
+        throw std::range_error("section not in bounds of ByteArray");
+
+    if (len == 0)
+        return ByteArray();
+
+    ByteArray ret;
+    ret.insert(ret.end(), this->begin() + begin, this->begin() + (begin + len));
+
+    return ret;
 }

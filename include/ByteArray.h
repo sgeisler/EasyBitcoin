@@ -76,6 +76,13 @@ public:
      * @return ripemd160 hash of ByteArray
      */
     ByteArray ripemd160() const;
+
+    /*!
+     * @param begin first byte of the section in the array
+     * @param len length of the section that will be copied
+     * @return section defined by begin and len (out of bounds error may be thrown)
+     */
+    ByteArray getSection(ByteArray::size_type begin, ByteArray::size_type len);
 };
 
 

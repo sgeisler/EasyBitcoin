@@ -126,3 +126,8 @@ TEST_CASE("sign tx")
     //for testing:
     //std::cout << t.serializeTransaction().toHex() << std::endl;
 }
+
+TEST_CASE("ByteArray getSection")
+{
+    REQUIRE(Conversions::fromHex("12345678").getSection(1, 2).toHex() == "3456");
+}
