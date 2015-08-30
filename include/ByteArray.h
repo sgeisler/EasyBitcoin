@@ -83,6 +83,21 @@ public:
      * @return section defined by begin and len (out of bounds error may be thrown)
      */
     ByteArray getSection(ByteArray::size_type begin, ByteArray::size_type len);
+
+    /*!
+     * @return first two bytes converted to uint16
+     */
+    uint16_t toUInt16();
+
+    /*!
+     * @return first four bytes converted to uint32
+     */
+    uint32_t toUInt32();
+
+    /*!
+     * @return first eight bytes converted to uint64
+     */
+    uint64_t toUInt64();
 };
 
 

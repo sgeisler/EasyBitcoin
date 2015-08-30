@@ -63,3 +63,18 @@ ByteArray ByteArray::getSection(ByteArray::size_type begin, ByteArray::size_type
 
     return ret;
 }
+
+uint16_t ByteArray::toUInt16()
+{
+    return Conversions::toUInt16(*this);
+}
+
+uint32_t ByteArray::toUInt32()
+{
+    return Conversions::toUInt32(*this);
+}
+
+uint64_t ByteArray::toUInt64()
+{
+    return Conversions::toUInt64(*this);
+}
