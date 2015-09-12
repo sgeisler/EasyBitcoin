@@ -352,7 +352,19 @@ bool ScriptExecutor::run(bool onlyOneStep)
 
         if (instruction == OP_PICK)
         {
+            if(stack.size() == 0)
+                throw std::runtime_error("Error: no item on stack, can't pick one");
 
+            int64_t n = Conversions::toScriptVarInt(stack.back());
+            stack.pop_back();
+
+            if((n >= stack.size()) || (n < 0))
+                throw std::runtime_error("Error: can't pick item from stack, out of bounds");
+
+            stack.push_back(stack[n]);
+
+            position += 1;
+            continue;
         }
     }
     while (!onlyOneStep);
