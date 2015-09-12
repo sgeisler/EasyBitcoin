@@ -114,6 +114,12 @@ namespace Conversions
      * @return reversed ByteArray
      */
     ByteArray reverse(ByteArray inp);
+
+    /*/
+     * @param data varInt as ByteArray from bitcoin script (little-endian, least significant bit = sign)
+     * @return decoded integer
+     */
+    int64_t toScriptVarInt(const ByteArray& data);
 };
 
 

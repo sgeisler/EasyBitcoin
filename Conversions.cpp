@@ -343,3 +343,35 @@ ByteArray Conversions::reverse(ByteArray inp)
     std::reverse(inp.begin(), inp.end());
     return inp;
 }
+
+int64_t Conversions::toScriptVarInt(const ByteArray& data)
+{
+    if(data.size() > 8)
+        throw std::runtime_error("number too big to convert");
+
+    if(data.size() == 0)
+        return 0;
+
+    bool sign = data[0] & 0b10000000;
+
+    uint64_t val;
+
+    for(ByteArray::const_iterator it = data.begin(); it != data.end(); ++it)
+    {
+        uint8_t tmp = *it;
+        if(it == data.begin())
+        {
+            tmp &= 0b01111111;
+            val = tmp;
+        }
+        else
+        {
+            val += (((uint64_t)tmp) << (8 * std::distance(data.begin(), it) - 1));
+        }
+    }
+
+    if(sign)
+        return val * -1;
+    else
+        return val;
+}
