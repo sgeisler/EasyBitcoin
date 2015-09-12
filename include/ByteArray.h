@@ -7,6 +7,7 @@
 
 #include <vector>
 #include <string>
+#include <inttypes.h>
 
 class ByteArray;
 typedef unsigned char Byte;
