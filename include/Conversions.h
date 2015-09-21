@@ -120,6 +120,12 @@ namespace Conversions
      * @return decoded integer
      */
     int64_t toScriptVarInt(const ByteArray& data);
+
+    /*
+     * @param val integer that will be encoded for script (varInt)
+     * @return encoded int
+     */
+    ByteArray fromScriptVarInt(int64_t val);
 };
 
 

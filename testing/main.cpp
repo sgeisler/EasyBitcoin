@@ -134,10 +134,9 @@ TEST_CASE("ByteArray getSection")
 
 TEST_CASE("ByteArray to scriptVarInt")
 {
-    REQUIRE(Conversions::toScriptVarInt(Conversions::fromHex("00")) == 0);
-    REQUIRE(Conversions::toScriptVarInt(Conversions::fromHex("80")) == 0);
-    REQUIRE(Conversions::toScriptVarInt(Conversions::fromHex("81")) == -1);
-    REQUIRE(Conversions::toScriptVarInt(Conversions::fromHex("8002")) == -256);
-    REQUIRE(Conversions::toScriptVarInt(Conversions::fromHex("800002")) == -65536);
-    REQUIRE(Conversions::toScriptVarInt(Conversions::fromHex("000002")) == 65536);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(0)) == 0);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(1)) == 1);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(123456)) == 123456);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(-1)) == -1);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(-123456)) == -123456);
 }

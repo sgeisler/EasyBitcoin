@@ -346,32 +346,50 @@ ByteArray Conversions::reverse(ByteArray inp)
 
 int64_t Conversions::toScriptVarInt(const ByteArray& data)
 {
-    if(data.size() > 8)
-        throw std::runtime_error("number too big to convert");
-
-    if(data.size() == 0)
+    if(data.empty())
         return 0;
 
-    bool sign = data[0] & 0b10000000;
+    if(data.size() > 4)
+        throw std::runtime_error("number too big to convert (more than 4 bytes)");
 
-    uint64_t val;
+    uint64_t val = 0;
 
-    for(ByteArray::const_iterator it = data.begin(); it != data.end(); ++it)
+    for(size_t b = 0; b < data.size(); ++b)
     {
-        uint8_t tmp = *it;
-        if(it == data.begin())
-        {
-            tmp &= 0b01111111;
-            val = tmp;
-        }
-        else
-        {
-            val += (((uint64_t)tmp) << (8 * std::distance(data.begin(), it) - 1));
-        }
+        val |= static_cast<int64_t>(data[b]) << (8 * b);
     }
 
-    if(sign)
-        return val * -1;
+    if(data.back() &0x80)
+    {
+        return -((int64_t)(val & ~(0x80ULL << 8 * (data.size() - 1))));
+    }
     else
+    {
         return val;
+    }
+}
+
+ByteArray Conversions::fromScriptVarInt(int64_t val)
+{
+    ByteArray ret;
+
+    if(val == 0)
+        return ret;
+
+    bool negative = (val < 0);
+
+    uint64_t absVal = negative ? -val : val;
+
+    while(absVal)
+    {
+        ret.push_back(absVal & 0xff);
+        absVal >>= 8;
+    }
+
+    if (ret.back() & 0x80)
+        ret.push_back(negative ? 0x80 : 0);
+    else if (negative)
+        ret.back() |= 0x80;
+
+    return ret;
 }
