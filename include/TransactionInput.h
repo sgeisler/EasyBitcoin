@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 27.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #ifndef EASYBITCOIN_TRANSACTIONINPUT_H
 #define EASYBITCOIN_TRANSACTIONINPUT_H
