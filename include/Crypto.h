@@ -44,6 +44,14 @@ namespace Crypto
      * @return compressed public key
      */
     ByteArray privKeyToCompressedPubKey(const ByteArray &privKey);
+
+    /*
+     * Checks if an ECDSA signature is valid
+     * @param hash the signed data (typically a hash)
+     * @param sig signature of data
+     * @return true if signature is valid, otherwise false
+     */
+    bool checkSig(const ByteArray &pubKey, const ByteArray &hash, const ByteArray &sig);
 };
 
 

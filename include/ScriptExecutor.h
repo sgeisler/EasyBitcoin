@@ -6,6 +6,7 @@
 #define EASYBITCOIN_SCRIPTEXECUTOR_H
 
 #include "ByteArray.h"
+#include "Transaction.h"
 
 enum ScriptState
 {
@@ -17,7 +18,7 @@ enum ScriptState
 class ScriptExecutor
 {
 public:
-    ScriptExecutor(const ByteArray& script);
+    ScriptExecutor(const Transaction &t, size_t inputNumber);
 
     std::vector<ByteArray> getStack();
     bool run(bool onlyOneStep = false);
@@ -29,6 +30,8 @@ private:
     std::vector<ByteArray> stack;
     std::vector<ByteArray> altStack;
     ByteArray script;
+    Transaction t;
+    size_t inputNumber;
     ByteArray::size_type position;
     ScriptState state;
 

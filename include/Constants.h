@@ -82,7 +82,7 @@
 #define OP_BOOLOR               0x9b
 #define OP_NUMEQUAL             0x9c
 #define OP_NUMEQUALVERIFY       0x9d
-#define OP_NUMNOTEQUAL          0x9d
+#define OP_NUMNOTEQUAL          0x9e
 #define OP_LESSTHAN             0x9f
 #define OP_GREATERTHAN          0xa0
 #define OP_LESSTHANOREQUAL      0xa1

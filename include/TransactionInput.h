@@ -21,18 +21,17 @@ struct TransactionInput
      */
     TransactionInput(const ByteArray &reversePrevHash,
                      uint32_t outputIndex,
-                     const ByteArray &script,
+                     const ByteArray &prevOutScript,
                      uint64_t value,
-                     uint32_t sequence = 0xffffffff,
-                     bool isSigned = false);
+                     const ByteArray &script = ByteArray(),
+                     uint32_t sequence = 0xffffffff);
 
     ByteArray reversePrevHash;
     uint32_t outputIndex;
     ByteArray script;
+    ByteArray prevOutScript;
     uint32_t sequence;
     uint64_t value;
-
-    bool isSigned;
 
     /*!
      * @return if the tx pays to the owner of the key with the given hash

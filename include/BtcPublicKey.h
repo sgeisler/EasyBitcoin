@@ -29,6 +29,13 @@ public:
      * @return the Base58Check encoded address belonging to the key
      */
     std::string getAddress() const;
+
+    /*
+     * @param hash the signed data (typically a hash)
+     * @param sig signature of data
+     * @return true if signature is valid, otherwise false
+     */
+    bool checkSig(ByteArray hash, ByteArray sig);
 };
 
 

@@ -4,11 +4,10 @@
 
 #include "BtcPublicKey.h"
 #include "Constants.h"
-#include "Conversions.h"
 #include "Crypto.h"
 
 #include <stdexcept>
-#include <string>
+#include <iostream>
 
 BtcPublicKey::BtcPublicKey(const ByteArray &pubKey) : ByteArray()
 {
@@ -30,4 +29,17 @@ bool BtcPublicKey::isCompressed() const
 std::string BtcPublicKey::getAddress() const
 {
     return Conversions::toBase58Check(Crypto::ripemd160(Crypto::sha256(*this)), 0);
+}
+
+bool BtcPublicKey::checkSig(ByteArray hash, ByteArray sig)
+{
+    try
+    {
+        return Crypto::checkSig(*this, hash, sig);
+    }
+    catch(std::runtime_error e)
+    {
+        std::cerr << e.what() << std::endl;
+        return false;
+    }
 }

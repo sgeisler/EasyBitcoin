@@ -284,7 +284,7 @@ ByteArray Conversions::fromVarInt(uint64_t num)
     ByteArray ret(len + 1);
     ret[0] = firstByte;
 
-    for (int bytePos = len; bytePos >= 1; --bytePos)
+    for (size_t bytePos = len; bytePos >= 1; --bytePos)
     {
         ret[bytePos] = (Byte) (num / (1 << (8 * (bytePos - 1))));
         num %= (1 << (8 * (bytePos - 1)));

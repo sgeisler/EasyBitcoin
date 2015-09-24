@@ -49,6 +49,13 @@ public:
      */
     ByteArray operator+(const ByteArray &other) const;
 
+    /*
+     * appends one byte to a byte array and returns the result
+     * @param other byte to append to this
+     * @return byte array
+     */
+    ByteArray operator+(const Byte other) const;
+
     /*!
      * encodes ByteArray to a hex string
      * @return hex representation

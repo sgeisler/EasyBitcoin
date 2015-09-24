@@ -21,7 +21,15 @@ ByteArray ByteArray::operator+(const ByteArray &other) const
 {
     ByteArray ret;
     ret.insert(ret.end(), this->begin(), this->end());
+    ret.insert(ret.end(), other.begin(), other.end());
+    return ret;
+}
+
+ByteArray ByteArray::operator+(const Byte other) const
+{
+    ByteArray ret;
     ret.insert(ret.end(), this->begin(), this->end());
+    ret.insert(ret.end(), other);
     return ret;
 }
 

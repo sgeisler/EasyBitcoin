@@ -9,6 +9,7 @@
 #include <openssl/sha.h>
 #include <openssl/ripemd.h>
 #include <openssl/ssl.h>
+#include <stdexcept>
 
 ByteArray Crypto::sha256(const ByteArray &input)
 {
@@ -86,4 +87,25 @@ ByteArray Crypto::privKeyToCompressedPubKey(const ByteArray &privKey)
     BN_free(privBn);
 
     return pubKey;
+}
+
+bool Crypto::checkSig(const ByteArray &pubKey, const ByteArray &hash, const ByteArray &sig)
+{
+    EC_KEY * eckey;
+    EC_KEY * key;
+    int res = 0;
+    const Byte * pubKeyPointer = &pubKey[0];
+
+    key = EC_KEY_new_by_curve_name(NID_secp256k1);
+    eckey = key;
+    o2i_ECPublicKey(&key, &pubKeyPointer, pubKey.size());
+
+    if (key != NULL)
+        res = ECDSA_verify(0, &hash[0], 32, &sig[0], sig.size(), key);
+    else
+        throw std::runtime_error("checkSig failed, pubKey invalid!");
+
+    EC_KEY_free(eckey);
+
+    return res == 1;
 }

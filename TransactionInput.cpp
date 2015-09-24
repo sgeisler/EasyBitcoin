@@ -3,48 +3,44 @@
 //
 
 #include <stdexcept>
-#include "TransactionInput.h"
+#include <inttypes.h>
 
-#include "Conversions.h"
-#include "Crypto.h"
+#include "TransactionInput.h"
 #include "Constants.h"
 
 TransactionInput::TransactionInput(const ByteArray &reversePrevHash,
                                    uint32_t outputIndex,
-                                   const ByteArray &script,
+                                   const ByteArray &prevOutScript,
                                    uint64_t value,
-                                   uint32_t sequence,
-                                   bool isSigned)
+                                   const ByteArray &script,
+                                   uint32_t sequence)
         : reversePrevHash(reversePrevHash),
           outputIndex(outputIndex),
-          script(script),
+          prevOutScript(prevOutScript),
           sequence(sequence),
           value(value),
-          isSigned(isSigned)
+          script(script)
 {
 }
 
 bool TransactionInput::isPayToPubKeyHash()
 {
-    if (script.size() != 25)
+    if (prevOutScript.size() != 25)
         return false;
 
-    if (script[0] != OP_DUP)
+    if (prevOutScript[0] != OP_DUP)
         return false;
 
-    if (script[1] != OP_HASH160)
+    if (prevOutScript[1] != OP_HASH160)
         return false;
 
-    if (script[2] != 0x14)
+    if (prevOutScript[2] != 0x14)
         return false;
 
-    if (script[23] != OP_EQUALVERIFY)
+    if (prevOutScript[23] != OP_EQUALVERIFY)
         return false;
 
-    if (script[24] != OP_CHECKSIG)
-        return false;
-
-    return true;
+    return prevOutScript[24] == OP_CHECKSIG;
 }
 
 ByteArray TransactionInput::getPubKeyHash()
@@ -53,7 +49,7 @@ ByteArray TransactionInput::getPubKeyHash()
         throw std::runtime_error("Transaction isn't PayToPubKeyHash");
 
     ByteArray ret;
-    ret.insert(ret.end(), script.begin() + 3, script.begin() + 23);
+    ret.insert(ret.end(), prevOutScript.begin() + 3, prevOutScript.begin() + 23);
 
     return ret;
 }

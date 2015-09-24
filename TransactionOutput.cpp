@@ -46,7 +46,6 @@ TransactionOutput::TransactionOutput(std::string addr, uint64_t value)
 
         default:
             throw std::runtime_error("Address version not supported");
-            break;
     }
 
 
