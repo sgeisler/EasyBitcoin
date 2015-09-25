@@ -32,6 +32,13 @@ public:
     };
 
     /*!
+     * initializes a ByteArray using a raw array of bytes
+     * @param data pointer to first element of input array
+     * @param len size of the array CAUTION: if too height SIGSEV may occur (only use if necessary e.g. to read from sockets)
+     */
+    ByteArray(const Byte * data, size_t len);
+
+    /*!
      * appends ByteArray
      * @param other ByteArray to append to this
      */
