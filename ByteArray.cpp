@@ -13,7 +13,7 @@
 ByteArray::ByteArray(const Byte *data, size_t len)
 : vector<Byte>(len)
 {
-    memcpy(&this->[0], data, len);
+    memcpy(&(*this)[0], data, len);
 }
 
 void ByteArray::operator+=(const ByteArray &other)
