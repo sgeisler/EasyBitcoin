@@ -1,3 +1,8 @@
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
+
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 
 #include "catch.hpp"
@@ -94,6 +99,20 @@ TEST_CASE("privKey to pubKey to address")
     REQUIRE(privKey2.getPublicKey().getAddress() == "1HZwkjkeaoZfTSaJxDw6aKkxp45agDiEzN");
 }
 
+TEST_CASE("signing")
+{
+    ByteArray hash = Conversions::fromHex("1234567890abcdef").sha256();
+    BtcPrivateKey privKey("L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1");
+    BtcPublicKey pubKey = privKey.getPublicKey();
+    ByteArray sig = privKey.sign(hash);
+    ByteArray falseSig = sig;
+    falseSig[0] = 0xab;
+
+    REQUIRE(pubKey.checkSig(hash, sig) == true);
+
+    REQUIRE(pubKey.checkSig(hash, falseSig) == false);
+}
+
 TEST_CASE("uint32 to bytes", "[fromUInt32]")
 {
     REQUIRE(Conversions::toHex(Conversions::fromUInt32(1234)) == "d2040000");
@@ -115,7 +134,6 @@ TEST_CASE("txIn get PubKeyHash")
 
 TEST_CASE("sign tx")
 {
-    //I cant test against a known good tx, because the sig. changes evry time (rnd) so it will be ok for now if it doesn't throw an error
     Transaction t;
     t.addInput(TransactionInput(Conversions::reverse(
             Conversions::fromHex("c8ab2a4fde8029c72f9689f653871f634c6a51bcd0fd4010b6995702b9713988")), 0,
@@ -123,6 +141,7 @@ TEST_CASE("sign tx")
     t.addOutput(TransactionOutput("1HikVCL5PsR75toN23yEifLqmg8uXAepoz", 90000));
     t.signPubKeyHashInput(0, BtcPrivateKey("L5G5BA4Veb4qvbgFHH4bNwVxJkRnAkSq8QUbPQ5YR57FZdKBPzm8"));
 
+    REQUIRE(t.isSigned());
     //for testing:
     //std::cout << t.serializeTransaction().toHex() << std::endl;
 }
@@ -130,4 +149,13 @@ TEST_CASE("sign tx")
 TEST_CASE("ByteArray getSection")
 {
     REQUIRE(Conversions::fromHex("12345678").getSection(1, 2).toHex() == "3456");
+}
+
+TEST_CASE("ByteArray to scriptVarInt")
+{
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(0)) == 0);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(1)) == 1);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(123456)) == 123456);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(-1)) == -1);
+    REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(-123456)) == -123456);
 }

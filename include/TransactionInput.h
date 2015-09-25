@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 27.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #ifndef EASYBITCOIN_TRANSACTIONINPUT_H
 #define EASYBITCOIN_TRANSACTIONINPUT_H
@@ -21,18 +22,17 @@ struct TransactionInput
      */
     TransactionInput(const ByteArray &reversePrevHash,
                      uint32_t outputIndex,
-                     const ByteArray &script,
+                     const ByteArray &prevOutScript,
                      uint64_t value,
-                     uint32_t sequence = 0xffffffff,
-                     bool isSigned = false);
+                     const ByteArray &script = ByteArray(),
+                     uint32_t sequence = 0xffffffff);
 
     ByteArray reversePrevHash;
     uint32_t outputIndex;
     ByteArray script;
+    ByteArray prevOutScript;
     uint32_t sequence;
     uint64_t value;
-
-    bool isSigned;
 
     /*!
      * @return if the tx pays to the owner of the key with the given hash

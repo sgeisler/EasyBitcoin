@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 28.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #include <stdexcept>
 
@@ -46,7 +47,6 @@ TransactionOutput::TransactionOutput(std::string addr, uint64_t value)
 
         default:
             throw std::runtime_error("Address version not supported");
-            break;
     }
 
 

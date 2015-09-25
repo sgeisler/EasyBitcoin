@@ -1,12 +1,14 @@
-//
-// Created by Sebastian on 24.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #ifndef EASYBITCOIN_BYTEARRAY_H
 #define EASYBITCOIN_BYTEARRAY_H
 
 #include <vector>
 #include <string>
+#include <inttypes.h>
 
 class ByteArray;
 typedef unsigned char Byte;
@@ -48,6 +50,13 @@ public:
      */
     ByteArray operator+(const ByteArray &other) const;
 
+    /*
+     * appends one byte to a byte array and returns the result
+     * @param other byte to append to this
+     * @return byte array
+     */
+    ByteArray operator+(const Byte other) const;
+
     /*!
      * encodes ByteArray to a hex string
      * @return hex representation
@@ -83,6 +92,21 @@ public:
      * @return section defined by begin and len (out of bounds error may be thrown)
      */
     ByteArray getSection(ByteArray::size_type begin, ByteArray::size_type len);
+
+    /*!
+     * @return first two bytes converted to uint16
+     */
+    uint16_t toUInt16();
+
+    /*!
+     * @return first four bytes converted to uint32
+     */
+    uint32_t toUInt32();
+
+    /*!
+     * @return first eight bytes converted to uint64
+     */
+    uint64_t toUInt64();
 };
 
 

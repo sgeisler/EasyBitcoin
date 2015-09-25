@@ -18,3 +18,4 @@ file(GLOB SOURCE_FILES
 
 add_library(EasyBitcoin ${SOURCE_FILES})
 add_executable(EasyBitcoinTests ${SOURCE_FILES} ./testing/main.cpp)
+add_executable(EasyBitcoinScriptTests ${SOURCE_FILES} ./testing/script_test.cpp)

@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 17.06.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #ifndef EASYBITCOIN_BASE58CHECKDECODE_H
 #define EASYBITCOIN_BASE58CHECKDECODE_H

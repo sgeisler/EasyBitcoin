@@ -1,13 +1,15 @@
-//
-// Created by Sebastian on 27.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
 
 
 #include <stdexcept>
-#include "Transaction.h"
 
-#include "Crypto.h"
 #include "ByteArray.h"
+#include "Transaction.h"
+#include "Crypto.h"
+#include "Constants.h"
+#include "ScriptExecutor.h"
 
 void Transaction::addInput(const TransactionInput &inp)
 {
@@ -32,8 +34,8 @@ ByteArray Transaction::getHashAllForInput(std::vector<TransactionInput>::size_ty
         ret += Conversions::fromUInt32(inputs[inp].outputIndex);
         if (inp == inputNumber)
         {
-            ret += Conversions::fromVarInt(inputs[inp].script.size());
-            ret += inputs[inp].script;
+            ret += Conversions::fromVarInt(inputs[inp].prevOutScript.size());
+            ret += inputs[inp].prevOutScript;
         }
         else
         {
@@ -60,9 +62,6 @@ ByteArray Transaction::getHashAllForInput(std::vector<TransactionInput>::size_ty
 void Transaction::signPubKeyHashInput(std::vector<TransactionInput>::size_type inputNumber,
                                       const BtcPrivateKey &privKey)
 {
-    if (inputs[inputNumber].isSigned == true)
-        throw std::runtime_error("TransactionInput is allready signed");
-
     BtcPublicKey pubKey = privKey.getPublicKey();
 
     if (pubKey.sha256().ripemd160() != inputs[inputNumber].getPubKeyHash())
@@ -73,19 +72,26 @@ void Transaction::signPubKeyHashInput(std::vector<TransactionInput>::size_type i
     inputs[inputNumber].script = ByteArray();
     inputs[inputNumber].script += signature.size() + 1;
     inputs[inputNumber].script += signature;
-    inputs[inputNumber].script += 1;
+    inputs[inputNumber].script += SIGHASH_ALL;
     inputs[inputNumber].script += pubKey.size();
     inputs[inputNumber].script += pubKey;
-
-    inputs[inputNumber].isSigned = true;
 }
 
 bool Transaction::isSigned()
 {
-    for (std::vector<TransactionInput>::iterator inp = inputs.begin(); inp != inputs.end(); inp++)
+    for (size_t inp = 0; inp < inputs.size(); ++inp)
     {
-        if (!((*inp).isSigned))
+        try
+        {
+            ScriptExecutor sce(*this, inp);
+            sce.run();
+            if(sce.getState() == INVALID)
+                return false;
+        }
+        catch(std::exception e)
+        {
             return false;
+        }
     }
     return true;
 }

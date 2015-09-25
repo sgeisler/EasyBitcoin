@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 24.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #include "Conversions.h"
 #include "Crypto.h"
@@ -284,7 +285,7 @@ ByteArray Conversions::fromVarInt(uint64_t num)
     ByteArray ret(len + 1);
     ret[0] = firstByte;
 
-    for (int bytePos = len; bytePos >= 1; --bytePos)
+    for (size_t bytePos = len; bytePos >= 1; --bytePos)
     {
         ret[bytePos] = (Byte) (num / (1 << (8 * (bytePos - 1))));
         num %= (1 << (8 * (bytePos - 1)));
@@ -342,4 +343,54 @@ ByteArray Conversions::reverse(ByteArray inp)
 {
     std::reverse(inp.begin(), inp.end());
     return inp;
+}
+
+int64_t Conversions::toScriptVarInt(const ByteArray& data)
+{
+    if(data.empty())
+        return 0;
+
+    if(data.size() > 4)
+        throw std::runtime_error("number too big to convert (more than 4 bytes)");
+
+    uint64_t val = 0;
+
+    for(size_t b = 0; b < data.size(); ++b)
+    {
+        val |= static_cast<int64_t>(data[b]) << (8 * b);
+    }
+
+    if(data.back() &0x80)
+    {
+        return -((int64_t)(val & ~(0x80ULL << 8 * (data.size() - 1))));
+    }
+    else
+    {
+        return val;
+    }
+}
+
+ByteArray Conversions::fromScriptVarInt(int64_t val)
+{
+    ByteArray ret;
+
+    if(val == 0)
+        return ret;
+
+    bool negative = (val < 0);
+
+    uint64_t absVal = negative ? -val : val;
+
+    while(absVal)
+    {
+        ret.push_back(absVal & 0xff);
+        absVal >>= 8;
+    }
+
+    if (ret.back() & 0x80)
+        ret.push_back(negative ? 0x80 : 0);
+    else if (negative)
+        ret.back() |= 0x80;
+
+    return ret;
 }

@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 14.06.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #ifndef EASYBITCOIN_BTCPUBLICKEY_H
 #define EASYBITCOIN_BTCPUBLICKEY_H
@@ -29,6 +30,13 @@ public:
      * @return the Base58Check encoded address belonging to the key
      */
     std::string getAddress() const;
+
+    /*
+     * @param hash the signed data (typically a hash)
+     * @param sig signature of data
+     * @return true if signature is valid, otherwise false
+     */
+    bool checkSig(ByteArray hash, ByteArray sig);
 };
 
 

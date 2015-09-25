@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 24.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #ifndef EASYBITCOIN_CONVERSIONS_H
 #define EASYBITCOIN_CONVERSIONS_H
@@ -114,6 +115,18 @@ namespace Conversions
      * @return reversed ByteArray
      */
     ByteArray reverse(ByteArray inp);
+
+    /*/
+     * @param data varInt as ByteArray from bitcoin script (little-endian, least significant bit = sign)
+     * @return decoded integer
+     */
+    int64_t toScriptVarInt(const ByteArray& data);
+
+    /*
+     * @param val integer that will be encoded for script (varInt)
+     * @return encoded int
+     */
+    ByteArray fromScriptVarInt(int64_t val);
 };
 
 

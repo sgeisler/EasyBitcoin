@@ -1,6 +1,7 @@
-//
-// Created by Sebastian on 24.05.2015.
-//
+// Copyright (c) 2015 Sebastian Geisler
+// Distributed under the MIT software license, see the accompanying
+// file LICENSE or http://www.opensource.org/licenses/mit-license.php.
+
 
 #ifndef EASYBITCOIN_CRYPTO_H
 #define EASYBITCOIN_CRYPTO_H
@@ -44,6 +45,14 @@ namespace Crypto
      * @return compressed public key
      */
     ByteArray privKeyToCompressedPubKey(const ByteArray &privKey);
+
+    /*
+     * Checks if an ECDSA signature is valid
+     * @param hash the signed data (typically a hash)
+     * @param sig signature of data
+     * @return true if signature is valid, otherwise false
+     */
+    bool checkSig(const ByteArray &pubKey, const ByteArray &hash, const ByteArray &sig);
 };
 
 
