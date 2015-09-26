@@ -5,11 +5,11 @@
 
 #include <stdexcept>
 
+#include "ScriptExecutor.h"
 #include "ByteArray.h"
 #include "Transaction.h"
 #include "Crypto.h"
 #include "Constants.h"
-#include "ScriptExecutor.h"
 
 void Transaction::addInput(const TransactionInput &inp)
 {
