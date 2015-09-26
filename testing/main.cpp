@@ -159,3 +159,12 @@ TEST_CASE("ByteArray to scriptVarInt")
     REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(-1)) == -1);
     REQUIRE(Conversions::toScriptVarInt(Conversions::fromScriptVarInt(-123456)) == -123456);
 }
+
+TEST_CASE("create new PrivKey")
+{
+    BtcPrivateKey key;
+    ByteArray hash = Conversions::fromHex("123456").sha256();
+    ByteArray sig = key.sign(hash);
+
+    REQUIRE(key.getPublicKey().checkSig(hash, sig));
+}

@@ -11,6 +11,13 @@
 #include "BtcPrivateKey.h"
 #include "Constants.h"
 
+BtcPrivateKey::BtcPrivateKey() : ByteArray()
+{
+    ByteArray pk = Crypto::newPrivateKey();
+    this->insert(this->begin(), pk.begin(), pk.end());
+    this->compressed = true;
+}
+
 BtcPrivateKey::BtcPrivateKey(const ByteArray &key) : ByteArray()
 {
     if (key.size() == EC_PRIVATE_KEY_LENGTH) {

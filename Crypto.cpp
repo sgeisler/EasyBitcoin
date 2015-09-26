@@ -28,6 +28,25 @@ ByteArray Crypto::ripemd160(const ByteArray &input)
     return ret;
 }
 
+ByteArray Crypto::newPrivateKey()
+{
+    EC_KEY * key = EC_KEY_new_by_curve_name(NID_secp256k1);
+
+    if(key == NULL)
+        throw std::runtime_error("Error: can't create new key.");
+
+    if(1 != EC_KEY_generate_key(key))
+        throw std::runtime_error("Error: can't create new random key.");
+
+    ByteArray privKey(EC_PRIVATE_KEY_LENGTH);
+
+    BN_bn2bin(EC_KEY_get0_private_key(key), &privKey[0]);
+
+    return privKey;
+}
+
+
+//TODO: add checks for errors like if(key == NULL)
 ByteArray Crypto::sign(const ByteArray &privKey, const ByteArray hash)
 {
     // I found 74 as the max. sig. len., but can't confirm
