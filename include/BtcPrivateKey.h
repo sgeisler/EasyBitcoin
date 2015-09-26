@@ -15,6 +15,12 @@
 class BtcPrivateKey : public ByteArray
 {
 public:
+
+    /*
+     * will initialize a new random key
+     */
+    BtcPrivateKey();
+
     /*!
      * @param key private key binary representation ( = fromBase58Check(WIF))
      */

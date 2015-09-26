@@ -24,6 +24,11 @@ namespace Crypto
      */
     ByteArray ripemd160(const ByteArray &input);
 
+    /*
+     * @return random private ECDSA key
+     */
+    ByteArray newPrivateKey();
+
     /*!
      * Signs binary data using ECDSA
      * @param privKey the private key that should be used
