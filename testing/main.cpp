@@ -168,3 +168,8 @@ TEST_CASE("create new PrivKey")
 
     REQUIRE(key.getPublicKey().checkSig(hash, sig));
 }
+
+TEST_CASE("WIF conversion")
+{
+    REQUIRE(BtcPrivateKey("L5G5BA4Veb4qvbgFHH4bNwVxJkRnAkSq8QUbPQ5YR57FZdKBPzm8").getWIF() == "L5G5BA4Veb4qvbgFHH4bNwVxJkRnAkSq8QUbPQ5YR57FZdKBPzm8");
+}

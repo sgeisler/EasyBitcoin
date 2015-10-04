@@ -68,6 +68,14 @@ BtcPublicKey BtcPrivateKey::getPublicKey() const
     }
 }
 
+std::string BtcPrivateKey::getWIF() const
+{
+    if(compressed)
+        return (*this + 0x01).toBase58Check(0x80);
+    else
+        return this->toBase58Check(0x80);
+}
+
 ByteArray BtcPrivateKey::sign(const ByteArray &hash) const
 {
     return Crypto::sign(*this, hash);

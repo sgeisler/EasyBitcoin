@@ -37,6 +37,11 @@ public:
     BtcPublicKey getPublicKey() const;
 
     /*!
+     * @return the private key as WIF (wallet import format) string
+     */
+    std::string getWIF() const;
+
+    /*!
      * @param hash data to sign
      * @return signed data
      */
