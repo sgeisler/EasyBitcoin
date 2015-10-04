@@ -173,3 +173,8 @@ TEST_CASE("WIF conversion")
 {
     REQUIRE(BtcPrivateKey("L5G5BA4Veb4qvbgFHH4bNwVxJkRnAkSq8QUbPQ5YR57FZdKBPzm8").getWIF() == "L5G5BA4Veb4qvbgFHH4bNwVxJkRnAkSq8QUbPQ5YR57FZdKBPzm8");
 }
+
+TEST_CASE("from/to string")
+{
+    REQUIRE(Conversions::toString(Conversions::fromString("test12345\r\n!")) == "test12345\r\n!");
+}

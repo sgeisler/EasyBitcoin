@@ -394,3 +394,13 @@ ByteArray Conversions::fromScriptVarInt(int64_t val)
 
     return ret;
 }
+
+ByteArray Conversions::fromString(const std::string &s)
+{
+    return ByteArray((Byte*)s.c_str(), s.size());
+}
+
+std::string Conversions::toString(const ByteArray &data)
+{
+    return std::string((char *)&data[0], data.size());
+}

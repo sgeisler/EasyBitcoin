@@ -127,6 +127,18 @@ namespace Conversions
      * @return encoded int
      */
     ByteArray fromScriptVarInt(int64_t val);
+
+    /*!
+     * @param s String that will be converted to byte-array (char[] -> unsigned char[])
+     * @return strings as ByteArray
+     */
+    ByteArray fromString(const std::string &s);
+
+    /*!
+     * @param data ByteArray that will be converted to std::string
+     * @return the resulting string
+     */
+    std::string toString(const ByteArray &data);
 };
 
 
