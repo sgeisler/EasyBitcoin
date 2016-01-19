@@ -46,7 +46,6 @@ ByteArray Crypto::newPrivateKey()
 }
 
 
-//TODO: add checks for errors like if(key == NULL)
 ByteArray Crypto::sign(const ByteArray &privKey, const ByteArray hash)
 {
     // I found 74 as the max. sig. len., but can't confirm
@@ -57,6 +56,9 @@ ByteArray Crypto::sign(const ByteArray &privKey, const ByteArray hash)
     unsigned int sigSize;
     EC_KEY *key = EC_KEY_new_by_curve_name(NID_secp256k1);
     BIGNUM *bn = BN_bin2bn(&privKey[0], EC_PRIVATE_KEY_LENGTH, NULL);
+
+    if(key == NULL || bn == NULL)
+        throw std::runtime_error("Error: can't create key object.");
 
     EC_KEY_set_private_key(key, bn);
     ECDSA_sign(0, &hash[0], hash.size(), &signature[0], &sigSize, key);
